@@ -14,6 +14,7 @@ struct ContentView: View {
     @State private var flag = false
     @State private var tmp = 0
     @State private var arr: [String] = []
+    @State private var showOrderAlert = false
 
     var body: some View {
         VStack(spacing: 20) {
@@ -35,7 +36,14 @@ struct ContentView: View {
                     .font(.title)
                     .monospacedDigit()
                 Button {
-                    teh += 1
+                    a -= 1
+                    if a < 0 { a = 0 }
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.largeTitle)
+                }
+                Button {
+                    a += 1
                     tmp = 1
                 } label: {
                     Image(systemName: "plus.circle.fill")
@@ -55,6 +63,13 @@ struct ContentView: View {
                 Text("\(teh)")
                     .font(.title)
                     .monospacedDigit()
+                Button {
+                    teh -= 1
+                    if teh < 0 { teh = 0 }
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.largeTitle)
+                }
                 Button {
                     teh += 1
                 } label: {
@@ -76,6 +91,13 @@ struct ContentView: View {
                     .font(.title)
                     .monospacedDigit()
                 Button {
+                    toast -= 1
+                    if toast < 0 { toast = 0 }
+                } label: {
+                    Image(systemName: "minus.circle.fill")
+                        .font(.largeTitle)
+                }
+                Button {
                     toast += 1
                     arr.append("x")
                 } label: {
@@ -87,18 +109,25 @@ struct ContentView: View {
             .background(Color.yellow.opacity(0.22))
             .clipShape(RoundedRectangle(cornerRadius: 16))
 
-            Text("Total  $\(Double(a) * 1.5 + Double(toast) * 2.0, specifier: "%.2f")")
+            Text("Total  $\(Double(a) * 1.5 + Double(teh) * 1.2 + Double(toast) * 2.0, specifier: "%.2f")")
                 .font(.title)
                 .bold()
                 .padding(.top, 8)
 
             Button("Place Order") {
+                showOrderAlert = true
             }
             .buttonStyle(.borderedProminent)
             .controlSize(.large)
             .font(.title2)
         }
         .padding(20)
+        .alert("Order Placed!", isPresented: $showOrderAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("Order Placed!")
+                .foregroundColor(.red)
+        }
     }
 }
 
